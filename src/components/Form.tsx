@@ -10,11 +10,11 @@ export default function Form() {
   });
   //handleChange es una funcion que recibe un evento y cambia el estado de la actividad
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     // se crea una constante que verifica si el campo es un campo de numero o no
     //* el includes es un metodo que verifica si un elemento esta dentro de un array
-    const isNumberField = ["calories", "category"].includes(e.target.id);
+    const isNumberField = ["calories", "category"].includes(event.target.id);
     //se cambia el estado de la actividad
     setActivity({
       //se mantiene el estado anterior para no perder los valores anteriores
@@ -22,9 +22,18 @@ export default function Form() {
       //se toma el target del evento y se lo asigna a dicho target
       // el target.id es el id del elemento en el que se esta escribiendo y el target.value es lo que el usuario esta escribiendo
       // la sintaxis es [key]: value y se coloca dentro de los corchetes para tener una key dinamica
-      [e.target.id]: isNumberField ? +e.target.value : e.target.value,
+      [event.target.id]: isNumberField
+        ? +event.target.value
+        : event.target.value,
     });
     // esto tambien se hace para que gusrde el valor de lo que este asignado el usuario en el target
+  };
+
+  const isValidActivity = () => {
+    // destructuramos la actividad para obtener el nombre y las calorias
+    const { name, calories } = activity;
+    // el trim es un metodo que elimina los espacios en blanco de un string
+    return name.trim() !== "" && calories > 0;
   };
   return (
     //el space-y-5 es un espacio entre los elementos hijos del form
@@ -76,10 +85,21 @@ export default function Form() {
       </div>
       <button
         type="submit"
-        className=" bg-gray-700 hover:bg-gray-950 w-full p-2 font-bold uppercase text-white rounded-lg cursor-pointer"
+        className=" bg-gray-700 hover:bg-gray-950 w-full p-2 font-bold uppercase text-white rounded-lg cursor-pointer disabled:opacity-15"
+        // se niega el valor de isValidActivity por que si es falso se deshabilita el boton
+        disabled={!isValidActivity()}
       >
-        Enviar
+        {activity.category === 1 ? "Guardar Comida" : "Guardar Ejercicio"}
       </button>
+      {/* <input
+        //por defecto aparece el input de tipo submit y este se podra comportar como un boton 
+        //cuando es input se debera de agregar un value para que se pueda ver el texto del boton, por defecto aparecera enviar
+        type="submit"
+        className=" bg-gray-700 hover:bg-gray-950 w-full p-2 font-bold uppercase text-white rounded-lg cursor-pointer disabled:opacity-15"
+        value={activity.category === 1 ? "Guardar Comida" : "Guardar Ejercicio"}
+        // se niega el valor de isValidActivity por que si es falso se deshabilita el boton
+        disabled={!isValidActivity()}
+      /> */}
     </form>
   );
 }
