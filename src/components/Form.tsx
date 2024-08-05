@@ -1,13 +1,21 @@
 import { useState } from "react";
 import { categorie } from "../data/categories";
 import { Activity } from "../types";
-export default function Form() {
+import { ActivityAction } from "../reducers/activity-reducer";
+
+type FormProps = {
+  dispatch: React.Dispatch<ActivityAction>;
+};
+
+const initialState = {
+  category: 1,
+  name: "",
+  calories: 0,
+};
+
+export default function Form({ dispatch }: FormProps) {
   // no se definen varios states de categoria, actividad y calorias debido a que se puede hacer con un solo state, tambien de que todos ellos estan relacionados y dependen uno del otro
-  const [activity, setActivity] = useState<Activity>({
-    category: 1,
-    name: "",
-    calories: 0,
-  });
+  const [activity, setActivity] = useState<Activity>(initialState);
   //handleChange es una funcion que recibe un evento y cambia el estado de la actividad
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -35,10 +43,22 @@ export default function Form() {
     // el trim es un metodo que elimina los espacios en blanco de un string
     return name.trim() !== "" && calories > 0;
   };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    // se previene la accion por defecto del formulario lo que significa que no se recargara la pagina
+    event.preventDefault();
+    // se crea una accion que se va a enviar al reducer
+    dispatch({ type: "save-activity", payload: { newActivity: activity } });
+    // se limpia el formulario
+    setActivity(initialState);
+  };
   return (
     //el space-y-5 es un espacio entre los elementos hijos del form
     //shadow es una sombra en el form
-    <form className="space-y-5 bg-white shadow p-10 rounded-lg">
+    <form
+      className="space-y-5 bg-white shadow p-10 rounded-lg"
+      onSubmit={handleSubmit}
+    >
       <div className="grid grid-cols-1 gap-5">
         <label htmlFor="category" className="font-bold">
           Categorias
@@ -85,7 +105,7 @@ export default function Form() {
       </div>
       <button
         type="submit"
-        className=" bg-gray-700 hover:bg-gray-950 w-full p-2 font-bold uppercase text-white rounded-lg cursor-pointer disabled:opacity-15"
+        className=" bg-gray-700 hover:bg-gray-950 w-full p-2 font-bold uppercase text-white rounded-lg cursor-pointer disabled:opacity-15 disabled:cursor-not-allowed"
         // se niega el valor de isValidActivity por que si es falso se deshabilita el boton
         disabled={!isValidActivity()}
       >
