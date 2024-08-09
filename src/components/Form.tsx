@@ -50,6 +50,7 @@ export default function Form({ dispatch }: FormProps) {
     // se previene la accion por defecto del formulario lo que significa que no se recargara la pagina
     event.preventDefault();
     // se crea una accion que se va a enviar al reducer
+    // el payload son los datos que le pasas junto a la accion
     dispatch({ type: "save-activity", payload: { newActivity: activity } });
     // se limpia el formulario
     setActivity({
