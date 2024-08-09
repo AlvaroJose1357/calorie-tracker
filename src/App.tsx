@@ -16,7 +16,8 @@ function App() {
         </div>
       </section>
       <section className="p-10 mx-auto max-w-4xl">
-        <ActivityList />
+        {/* los dobles signos de interrogacion mas conocido como operador de fusion nula proporcionar un valor predeterminado cuando una expresión es null o undefined. ?? []: Este es el operador de fusión nula. Si el resultado de state?.activities es null o undefined, entonces la expresión completa devuelve un array vacío [].*/}
+        <ActivityList activities={state?.activities ?? []} />
       </section>
     </>
   );
