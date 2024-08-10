@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { categorie } from "../data/categories";
 import { Activity } from "../types";
-import { ActivityAction } from "../reducers/activity-reducer";
+import { ActivityAction, ActivityState } from "../reducers/activity-reducer";
 
 type FormProps = {
   dispatch: React.Dispatch<ActivityAction>;
+  state: ActivityState;
 };
 
 const initialState: Activity = {
@@ -15,9 +16,19 @@ const initialState: Activity = {
   calories: 0,
 };
 
-export default function Form({ dispatch }: FormProps) {
+export default function Form({ dispatch, state }: FormProps) {
   // no se definen varios states de categoria, actividad y calorias debido a que se puede hacer con un solo state, tambien de que todos ellos estan relacionados y dependen uno del otro
   const [activity, setActivity] = useState<Activity>(initialState);
+  // este useEffect se usa por si el usuario selecciona una actividad para editar, se va a mostrar en el formulario
+  useEffect(() => {
+    if (state.activeID) {
+      // se coloca al final [0] para que devuelva el objeto y no un arreglo
+      const currentActivity = state.activities.filter(
+        (stateActivity) => stateActivity.id === state.activeID
+      )[0];
+      setActivity(currentActivity);
+    }
+  }, [state.activeID]);
   //handleChange es una funcion que recibe un evento y cambia el estado de la actividad
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
