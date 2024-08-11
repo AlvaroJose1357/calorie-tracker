@@ -11,6 +11,10 @@ export type ActivityAction =
   | {
       type: "set-activeID";
       payload: { id: Activity["id"] };
+    }
+  | {
+      type: "delete-activity";
+      payload: { id: Activity["id"] };
     };
 
 // este type lo que hace es definir el estado de la actividad que se va a realizar
@@ -65,6 +69,15 @@ export const activityReducer = (
       ...state,
       // se actualiza el activeID
       activeID: action.payload.id,
+    };
+  }
+  if (action.type === "delete-activity") {
+    return {
+      ...state,
+      // se filtra el arreglo de actividades y se retorna un nuevo arreglo de actividades sin la actividad que se quiere eliminar
+      activities: state.activities.filter(
+        (activity) => activity.id !== action.payload.id
+      ),
     };
   }
 };

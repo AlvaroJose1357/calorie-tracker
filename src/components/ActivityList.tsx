@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Activity } from "../types";
 import { categorie } from "../data/categories";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { ActivityAction } from "../reducers/activity-reducer";
 
 type ActivitylistProps = {
@@ -57,9 +57,6 @@ export default function ActivityList({
               </div>
               {/* este div es para los botones de eliminar y editar */}
               <div className="flex items-center gap-5">
-                <button className="bg-red-500 text-white p-2 rounded-lg">
-                  Eliminar
-                </button>
                 <button
                   onClick={() =>
                     dispatch({
@@ -69,6 +66,16 @@ export default function ActivityList({
                   }
                 >
                   <PencilSquareIcon className="h-8 w-8 text-gray-800 " />
+                </button>
+                <button
+                  onClick={() =>
+                    dispatch({
+                      type: "delete-activity",
+                      payload: { id: activity.id },
+                    })
+                  }
+                >
+                  <TrashIcon className="h-8 w-8 text-red-600 " />
                 </button>
               </div>
             </div>
