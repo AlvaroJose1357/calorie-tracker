@@ -24,10 +24,15 @@ export type ActivityState = {
   // por un lookUp
   activeID: Activity["id"];
 };
+
+const localStorageActivities = (): Activity[] => {
+  const localActivities = localStorage.getItem("activities");
+  return localActivities ? JSON.parse(localActivities) : [];
+};
 //  el type ActivityState y la const initialState van aliados
 // este es el estado inicial de la actividad que se va a realizar, iniciando con un arreglo vacio
 export const initialState: ActivityState = {
-  activities: [],
+  activities: localStorageActivities(),
   activeID: "",
 };
 
