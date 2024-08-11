@@ -1,11 +1,24 @@
-export default function Header() {
+import { useMemo } from "react";
+import { ActivityAction, ActivityState } from "../reducers/activity-reducer";
+
+type HeaderProps = {
+  state: ActivityState;
+  dispatch: React.Dispatch<ActivityAction>;
+};
+export default function Header({ state, dispatch }: HeaderProps) {
+  const ResetApp = () =>
+    useMemo(() => state.activities.length, [state?.activities]);
   return (
     <header className="bg-lime-600 py-3">
       <div className="max-w-4xl mx-auto flex justify-between">
         <h1 className="text-center text-lg font-bold text-white uppercase px-6">
           Contador de Calorias
         </h1>
-        <button className="px-3 mx-3 border-2 rounded-xl text-white hover:bg-lime-400 hover:text-black transition duration-300 ease-in-out">
+        <button
+          className="px-3 mx-3 border-2 rounded-xl text-white text-sm bg-gray-600 hover:bg-gray-900 font-bold uppercase cursor-pointer disabled:opacity-10"
+          disabled={!ResetApp()}
+          onClick={() => dispatch({ type: "reset-APP" })}
+        >
           Reset App
         </button>
       </div>

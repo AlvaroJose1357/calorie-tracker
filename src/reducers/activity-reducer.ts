@@ -15,8 +15,11 @@ export type ActivityAction =
   | {
       type: "delete-activity";
       payload: { id: Activity["id"] };
+    }
+  | {
+      // como solamente se va a resetear la app no se necesita un payload
+      type: "reset-APP";
     };
-
 // este type lo que hace es definir el estado de la actividad que se va a realizar
 export type ActivityState = {
   // se va a llamar activities y va a ser un arreglo de Activity
@@ -83,6 +86,13 @@ export const activityReducer = (
       activities: state.activities.filter(
         (activity) => activity.id !== action.payload.id
       ),
+    };
+  }
+  if (action.type === "reset-APP") {
+    return {
+      // se resetea el estado de la aplicacion
+      activities: [],
+      activeID: "",
     };
   }
 };

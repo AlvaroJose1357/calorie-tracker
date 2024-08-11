@@ -33,11 +33,11 @@ export default function ActivityList({
           No hay actividades registradas
         </p>
       ) : (
-        <div className="mt-5">
+        <div className="mt-5 ">
           {activities.map((activity) => (
             <div
               key={activity.id}
-              className="px-5 py-10 mt-5 flex justify-between"
+              className="px-5 py-10 flex justify-between shadow-md"
             >
               {/* este div es para dar una descripcion de la actividad */}
               <div className="space-y-2 relative">

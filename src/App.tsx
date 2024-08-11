@@ -13,11 +13,11 @@ function App() {
   }, [state?.activities]);
   return (
     <>
-      <Header />
+      <Header state={state ?? initialState} dispatch={dispatch} />
       <section className="bg-lime-500 py-20 px-5">
         <div className="max-w-4xl mx-auto">
           {/* // se coloca el doble signo de interrogacion para que no de error si
-          no se encuentra el state */}
+          no se encuentra nada en el state */}
           <Form dispatch={dispatch} state={state ?? initialState} />
         </div>
       </section>
