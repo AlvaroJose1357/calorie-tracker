@@ -1,12 +1,12 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import Form from "./components/Form";
 import Header from "./components/Header";
-import { activityReducer, initialState } from "./reducers/activity-reducer";
 import ActivityList from "./components/ActivityList";
 import CalorieTracker from "./components/CalorieTracker";
+import { useActivity } from "./hooks/useActivity";
 
 function App() {
-  const [state, dispatch] = useReducer(activityReducer, initialState);
+  const { state } = useActivity();
   useEffect(() => {
     // const activities = JSON.parse(localStorage.getItem("activities") ?? "[]");
     // dispatch({ type: "set-activities", payload: { activities } });
@@ -14,25 +14,22 @@ function App() {
   }, [state?.activities]);
   return (
     <>
-      <Header state={state ?? initialState} dispatch={dispatch} />
+      <Header />
       <section className="bg-lime-500 py-20 px-5">
         <div className="max-w-4xl mx-auto">
           {/* // se coloca el doble signo de interrogacion para que no de error si
           no se encuentra nada en el state */}
-          <Form dispatch={dispatch} state={state ?? initialState} />
+          <Form />
         </div>
       </section>
       <section className="bg-gray-800 py-10">
         <div className="max-w-4xl mx-auto">
-          <CalorieTracker activities={state?.activities ?? []} />
+          <CalorieTracker />
         </div>
       </section>
       <section className="p-10 mx-auto max-w-4xl">
         {/* los dobles signos de interrogacion mas conocido como operador de fusion nula proporcionar un valor predeterminado cuando una expresión es null o undefined. ?? []: Este es el operador de fusión nula. Si el resultado de state?.activities es null o undefined, entonces la expresión completa devuelve un array vacío [].*/}
-        <ActivityList
-          activities={state?.activities ?? []}
-          dispatch={dispatch}
-        />
+        <ActivityList />
       </section>
     </>
   );

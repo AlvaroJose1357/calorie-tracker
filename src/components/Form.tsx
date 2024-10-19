@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { categorie } from "../data/categories";
 import { Activity } from "../types";
-import { ActivityAction, ActivityState } from "../reducers/activity-reducer";
-
-type FormProps = {
-  dispatch: React.Dispatch<ActivityAction>;
-  state: ActivityState;
-};
+import { useActivity } from "../hooks/useActivity";
 
 const initialState: Activity = {
   id: uuidv4(),
@@ -16,7 +11,9 @@ const initialState: Activity = {
   calories: 0,
 };
 
-export default function Form({ dispatch, state }: FormProps) {
+export default function Form() {
+  // se llama al hook useActivity para tener acceso al estado y al dispatch
+  const { state, dispatch } = useActivity();
   // no se definen varios states de categoria, actividad y calorias debido a que se puede hacer con un solo state, tambien de que todos ellos estan relacionados y dependen uno del otro
   const [activity, setActivity] = useState<Activity>(initialState);
   // este useEffect se usa por si el usuario selecciona una actividad para editar, se va a mostrar en el formulario
@@ -74,10 +71,11 @@ export default function Form({ dispatch, state }: FormProps) {
     //shadow es una sombra en el form
     <form
       className="space-y-5 bg-white shadow p-10 rounded-lg"
-      onSubmit={handleSubmit}
-    >
+      onSubmit={handleSubmit}>
       <div className="grid grid-cols-1 gap-5">
-        <label htmlFor="category" className="font-bold">
+        <label
+          htmlFor="category"
+          className="font-bold">
           Categorias
         </label>
         <select
@@ -85,17 +83,20 @@ export default function Form({ dispatch, state }: FormProps) {
           id="category"
           // si se tiene un value se debe tener un onChange
           value={activity.category}
-          onChange={handleChange}
-        >
+          onChange={handleChange}>
           {categorie.map((category) => (
-            <option key={category.id} value={category.id}>
+            <option
+              key={category.id}
+              value={category.id}>
               {category.name}
             </option>
           ))}
         </select>
       </div>
       <div className="grid grid-cols-1 gap-5">
-        <label htmlFor="name" className="font-bold">
+        <label
+          htmlFor="name"
+          className="font-bold">
           Actividad
         </label>
         <input
@@ -108,7 +109,9 @@ export default function Form({ dispatch, state }: FormProps) {
         />
       </div>
       <div className="grid grid-cols-1 gap-5">
-        <label htmlFor="calories" className="font-bold">
+        <label
+          htmlFor="calories"
+          className="font-bold">
           Calorias
         </label>
         <input
@@ -124,8 +127,7 @@ export default function Form({ dispatch, state }: FormProps) {
         type="submit"
         className=" bg-gray-700 hover:bg-gray-950 w-full p-2 font-bold uppercase text-white rounded-lg cursor-pointer disabled:opacity-15 disabled:cursor-not-allowed"
         // se niega el valor de isValidActivity por que si es falso se deshabilita el boton
-        disabled={!isValidActivity()}
-      >
+        disabled={!isValidActivity()}>
         {activity.category === 1 ? "Guardar Comida" : "Guardar Ejercicio"}
       </button>
       {/* <input
