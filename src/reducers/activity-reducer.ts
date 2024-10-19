@@ -95,4 +95,5 @@ export const activityReducer = (
       activeID: "",
     };
   }
+  return state;
 };
